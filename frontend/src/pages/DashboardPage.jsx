@@ -4,12 +4,15 @@ import { fetchApplications } from '../api/applicationsApi.js';
 import ApplicationTable from '../components/applications/ApplicationTable.jsx';
 import TodayPanel from '../components/applications/TodayPanel.jsx';
 import ApplicationForm from '../components/applications/ApplicationForm.jsx';
+import ApplicationEditForm from '../components/applications/ApplicationEditForm.jsx';
+import StatsBar from '../components/applications/StatsBar.jsx';
 
 const DashboardPage = () => {
   const [applications, setApplications] = useState([]);
   const [statusFilter, setStatusFilter] = useState('');
   const [search, setSearch] = useState('');
   const [showForm, setShowForm] = useState(false);
+  const [editingApp, setEditingApp] = useState(null);
 
   const loadApplications = async () => {
     try {
@@ -17,23 +20,41 @@ const DashboardPage = () => {
         status: statusFilter || undefined,
         search: search || undefined,
       });
-      console.log('Loaded applications:', data);
-      setApplications(data);
+
+      // sort by nextActionDate, then appliedDate
+      const sorted = [...data].sort((a, b) => {
+        const aNext = a.nextActionDate ? new Date(a.nextActionDate) : null;
+        const bNext = b.nextActionDate ? new Date(b.nextActionDate) : null;
+
+        if (aNext && bNext) return aNext - bNext;
+        if (aNext && !bNext) return -1;
+        if (!aNext && bNext) return 1;
+
+        const aApplied = a.appliedDate ? new Date(a.appliedDate) : null;
+        const bApplied = b.appliedDate ? new Date(b.appliedDate) : null;
+
+        if (aApplied && bApplied) return aApplied - bApplied;
+
+        return 0;
+      });
+
+      console.log('Loaded applications (sorted):', sorted);
+      setApplications(sorted);
     } catch (err) {
       console.error('Error loading applications', err);
     }
   };
 
-  // Load once on mount
   useEffect(() => {
     loadApplications();
-    // We intentionally only want this to run once on mount.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <main style={{ padding: '2rem' }}>
       <h1>Dashboard</h1>
+
+      <StatsBar applications={applications} />
 
       <section style={{ marginBottom: '1rem' }}>
         <input
@@ -53,21 +74,33 @@ const DashboardPage = () => {
           <option value="offer">Offer</option>
           <option value="rejected">Rejected</option>
         </select>
-        {/* Explicitly re-load when the user clicks Apply */}
         <button onClick={loadApplications}>Apply Filters</button>
         <button onClick={() => setShowForm(true)}>Add Application</button>
       </section>
 
       <TodayPanel applications={applications} />
 
-      <ApplicationTable applications={applications} />
+      <ApplicationTable
+        applications={applications}
+        onEdit={(app) => setEditingApp(app)}
+      />
 
       {showForm && (
         <ApplicationForm
           onClose={() => setShowForm(false)}
           onCreated={() => {
             setShowForm(false);
-            // Re-load after creating a new application
+            loadApplications();
+          }}
+        />
+      )}
+
+      {editingApp && (
+        <ApplicationEditForm
+          app={editingApp}
+          onClose={() => setEditingApp(null)}
+          onUpdated={() => {
+            setEditingApp(null);
             loadApplications();
           }}
         />
@@ -77,6 +110,7 @@ const DashboardPage = () => {
 };
 
 export default DashboardPage;
+
 
 
 

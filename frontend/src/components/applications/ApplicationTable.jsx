@@ -1,7 +1,7 @@
 // src/components/applications/ApplicationTable.jsx
 import ApplicationRow from './ApplicationRow.jsx';
 
-const ApplicationTable = ({ applications }) => {
+const ApplicationTable = ({ applications, onEdit }) => {
   if (!applications.length) {
     return <p>No applications yet. Add your first one!</p>;
   }
@@ -11,7 +11,7 @@ const ApplicationTable = ({ applications }) => {
       style={{
         width: '100%',
         marginTop: '1rem',
-        borderCollapse: 'collapse'
+        borderCollapse: 'collapse',
       }}
     >
       <thead>
@@ -22,11 +22,12 @@ const ApplicationTable = ({ applications }) => {
           <th>Applied</th>
           <th>Next Action</th>
           <th>Next Date</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
         {applications.map((app) => (
-          <ApplicationRow key={app._id} app={app} />
+          <ApplicationRow key={app._id} app={app} onEdit={onEdit} />
         ))}
       </tbody>
     </table>
@@ -34,4 +35,5 @@ const ApplicationTable = ({ applications }) => {
 };
 
 export default ApplicationTable;
+
 
