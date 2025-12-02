@@ -160,6 +160,17 @@ body {
   font-size: 0.8rem;
 }
 
+.btn-danger {
+  background: #fef2f2;
+  color: #b91c1c;
+  border-color: #fecaca;
+}
+
+.btn-danger:hover {
+  background: #fee2e2;
+}
+
+
 /* Group of buttons (forms, filters) */
 .btn-row {
   display: inline-flex;

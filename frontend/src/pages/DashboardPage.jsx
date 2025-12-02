@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react';
-import { fetchApplications } from '../api/applicationsApi.js';
+import {
+  fetchApplications,
+  deleteApplication as deleteApplicationApi,
+} from '../api/applicationsApi.js';
+
 import ApplicationTable from '../components/applications/ApplicationTable.jsx';
 import TodayPanel from '../components/applications/TodayPanel.jsx';
 import ApplicationForm from '../components/applications/ApplicationForm.jsx';
@@ -40,6 +44,21 @@ const DashboardPage = () => {
       setApplications(sorted);
     } catch (err) {
       console.error('Error loading applications', err);
+    }
+  };
+
+    const handleDelete = async (id) => {
+    const ok = window.confirm(
+      'Delete this application? This action cannot be undone.'
+    );
+    if (!ok) return;
+
+    try {
+      await deleteApplicationApi(id);
+      await loadApplications();
+    } catch (err) {
+      console.error('Error deleting application', err);
+      alert('There was a problem deleting this application.');
     }
   };
 
@@ -99,6 +118,7 @@ const DashboardPage = () => {
           <ApplicationTable
             applications={applications}
             onEdit={(app) => setEditingApp(app)}
+            onDelete={handleDelete}
           />
         </div>
       </section>

@@ -30,7 +30,7 @@ const getStatusStyle = (status) => {
   }
 };
 
-const ApplicationRow = ({ app, onEdit }) => {
+const ApplicationRow = ({ app, onEdit, onDelete }) => {
   return (
     <tr>
       <td>{app.company}</td>
@@ -42,17 +42,27 @@ const ApplicationRow = ({ app, onEdit }) => {
       <td>{app.nextAction || '-'}</td>
       <td>{formatDate(app.nextActionDate)}</td>
       <td>
-        <button
-          type="button"
-          className="btn btn-secondary btn-sm"
-          onClick={() => onEdit && onEdit(app)}
-        >
-          Edit
-        </button>
+        <div className="btn-row">
+          <button
+            type="button"
+            className="btn btn-secondary btn-sm"
+            onClick={() => onEdit && onEdit(app)}
+          >
+            Edit
+          </button>
+          <button
+            type="button"
+            className="btn btn-danger btn-sm"
+            onClick={() => onDelete && onDelete(app._id)}
+          >
+            Delete
+          </button>
+        </div>
       </td>
     </tr>
   );
 };
+
 
 export default ApplicationRow;
 
