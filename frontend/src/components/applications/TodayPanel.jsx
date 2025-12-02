@@ -1,5 +1,3 @@
-// src/components/applications/TodayPanel.jsx
-
 const TodayPanel = ({ applications }) => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -9,20 +7,19 @@ const TodayPanel = ({ applications }) => {
       if (!app.nextActionDate) return false;
       const date = new Date(app.nextActionDate);
       date.setHours(0, 0, 0, 0);
-      return date <= today; // today or earlier
+      return date <= today;
     })
     .sort((a, b) => {
       const aDate = new Date(a.nextActionDate);
       const bDate = new Date(b.nextActionDate);
-      return aDate - bDate; // earliest first
+      return aDate - bDate;
     });
 
   return (
-    <section style={{ marginBottom: '1rem' }}>
-      <h2>Today & Overdue Actions</h2>
-
+    <>
+      <h2 className="subheading">Today & Overdue Actions</h2>
       {todayAndOverdue.length === 0 ? (
-        <p>No actions due today. 🙌</p>
+        <p className="text-muted">No actions due today. 🙌</p>
       ) : (
         <ul>
           {todayAndOverdue.map((app) => (
@@ -32,9 +29,10 @@ const TodayPanel = ({ applications }) => {
           ))}
         </ul>
       )}
-    </section>
+    </>
   );
 };
 
 export default TodayPanel;
+
 

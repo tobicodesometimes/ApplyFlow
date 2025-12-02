@@ -1,5 +1,3 @@
-// src/components/applications/ApplicationRow.jsx
-
 const formatDate = (value) => {
   if (!value) return '-';
   return new Date(value).toLocaleDateString();
@@ -44,13 +42,20 @@ const ApplicationRow = ({ app, onEdit }) => {
       <td>{app.nextAction || '-'}</td>
       <td>{formatDate(app.nextActionDate)}</td>
       <td>
-        <button onClick={() => onEdit && onEdit(app)}>Edit</button>
+        <button
+          type="button"
+          className="btn btn-secondary btn-sm"
+          onClick={() => onEdit && onEdit(app)}
+        >
+          Edit
+        </button>
       </td>
     </tr>
   );
 };
 
 export default ApplicationRow;
+
 
 
 

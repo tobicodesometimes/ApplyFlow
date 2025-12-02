@@ -1,4 +1,3 @@
-// src/pages/DashboardPage.jsx
 import { useEffect, useState } from 'react';
 import { fetchApplications } from '../api/applicationsApi.js';
 import ApplicationTable from '../components/applications/ApplicationTable.jsx';
@@ -21,7 +20,6 @@ const DashboardPage = () => {
         search: search || undefined,
       });
 
-      // sort by nextActionDate, then appliedDate
       const sorted = [...data].sort((a, b) => {
         const aNext = a.nextActionDate ? new Date(a.nextActionDate) : null;
         const bNext = b.nextActionDate ? new Date(b.nextActionDate) : null;
@@ -51,39 +49,59 @@ const DashboardPage = () => {
   }, []);
 
   return (
-    <main style={{ padding: '2rem' }}>
-      <h1>Dashboard</h1>
+    <main className="shell">
+      <h1 className="page-title">Dashboard</h1>
 
       <StatsBar applications={applications} />
 
-      <section style={{ marginBottom: '1rem' }}>
-        <input
-          placeholder="Search by company or role"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <select
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
-        >
-          <option value="">All statuses</option>
-          <option value="applied">Applied</option>
-          <option value="phone">Phone Screen</option>
-          <option value="oa">Online Assessment</option>
-          <option value="onsite">Onsite</option>
-          <option value="offer">Offer</option>
-          <option value="rejected">Rejected</option>
-        </select>
-        <button onClick={loadApplications}>Apply Filters</button>
-        <button onClick={() => setShowForm(true)}>Add Application</button>
+      <section className="section-card" style={{ marginBottom: '1.5rem' }}>
+        <div style={{ marginBottom: '0.75rem' }}>
+          <input
+            placeholder="Search by company or role"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            style={{ padding: '0.4rem 0.6rem', marginRight: '0.5rem' }}
+          />
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            style={{ padding: '0.4rem 0.6rem', marginRight: '0.5rem' }}
+          >
+            <option value="">All statuses</option>
+            <option value="applied">Applied</option>
+            <option value="phone">Phone Screen</option>
+            <option value="oa">Online Assessment</option>
+            <option value="onsite">Onsite</option>
+            <option value="offer">Offer</option>
+            <option value="rejected">Rejected</option>
+          </select>
+          <span className="btn-row">
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={loadApplications}
+            >
+              Apply Filters
+            </button>
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() => setShowForm(true)}
+            >
+              Add Application
+            </button>
+          </span>
+        </div>
+
+        <TodayPanel applications={applications} />
+
+        <div className="data-table-wrapper">
+          <ApplicationTable
+            applications={applications}
+            onEdit={(app) => setEditingApp(app)}
+          />
+        </div>
       </section>
-
-      <TodayPanel applications={applications} />
-
-      <ApplicationTable
-        applications={applications}
-        onEdit={(app) => setEditingApp(app)}
-      />
 
       {showForm && (
         <ApplicationForm
@@ -110,6 +128,7 @@ const DashboardPage = () => {
 };
 
 export default DashboardPage;
+
 
 
 
