@@ -25,40 +25,84 @@ const RegisterPage = () => {
   };
 
   return (
-    <main style={{ padding: '2rem' }}>
-      <h1>Register</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Name</label><br />
-          <input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Email</label><br />
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Password</label><br />
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        <button type="submit">Create Account</button>
-      </form>
-      <p>
-        Already have an account? <Link to="/login">Log in</Link>
-      </p>
+    <main className="shell">
+      <section className="section-card auth-card">
+        <h1 className="page-title" style={{ fontSize: '1.9rem', textAlign: 'center' }}>
+          Create an Account
+        </h1>
+        <p className="text-muted" style={{ textAlign: 'center', marginBottom: '1.25rem' }}>
+          Track your job applications, follow-ups, and offers in one place.
+        </p>
+
+        <form onSubmit={handleSubmit} className="form-stack">
+          <div className="form-field">
+            <label htmlFor="register-name">Name</label>
+            <input
+              id="register-name"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="form-field">
+            <label htmlFor="register-email">Email</label>
+            <input
+              id="register-email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="form-field">
+            <label htmlFor="register-password">Password</label>
+            <input
+              id="register-password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+
+          {error && (
+            <p style={{ color: 'red', fontSize: '0.85rem' }}>
+              {error}
+            </p>
+          )}
+
+          <div className="form-actions">
+            <button type="submit" className="btn btn-primary">
+              Register
+            </button>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => {
+                setName('');
+                setEmail('');
+                setPassword('');
+                setError('');
+              }}
+            >
+              Clear
+            </button>
+          </div>
+        </form>
+
+        <p
+          className="text-muted"
+          style={{ marginTop: '1rem', textAlign: 'center' }}
+        >
+          Already have an account?{' '}
+          <Link to="/login" style={{ color: '#4f46e5', textDecoration: 'none' }}>
+            Log in
+          </Link>
+        </p>
+      </section>
     </main>
   );
 };

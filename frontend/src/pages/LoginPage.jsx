@@ -24,33 +24,73 @@ const LoginPage = () => {
   };
 
   return (
-    <main style={{ padding: '2rem' }}>
-      <h1>Log In</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email</label><br />
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Password</label><br />
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        <button type="submit">Log In</button>
-      </form>
-      <p>
-        No account? <Link to="/register">Register</Link>
-      </p>
+    <main className="shell">
+      <section className="section-card auth-card">
+        <h1 className="page-title" style={{ fontSize: '1.9rem', textAlign: 'center' }}>
+          Log In
+        </h1>
+        <p className="text-muted" style={{ textAlign: 'center', marginBottom: '1.25rem' }}>
+          Sign in to see your job applications and follow-ups.
+        </p>
+
+        <form onSubmit={handleSubmit} className="form-stack">
+          <div className="form-field">
+            <label htmlFor="login-email">Email</label>
+            <input
+              id="login-email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="form-field">
+            <label htmlFor="login-password">Password</label>
+            <input
+              id="login-password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+
+          {error && (
+            <p style={{ color: 'red', fontSize: '0.85rem' }}>
+              {error}
+            </p>
+          )}
+
+          <div className="form-actions">
+            <button type="submit" className="btn btn-primary">
+              Log In
+            </button>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => {
+                // optional: clear fields
+                setEmail('');
+                setPassword('');
+                setError('');
+              }}
+            >
+              Clear
+            </button>
+          </div>
+        </form>
+
+        <p
+          className="text-muted"
+          style={{ marginTop: '1rem', textAlign: 'center' }}
+        >
+          No account yet?{' '}
+          <Link to="/register" style={{ color: '#4f46e5', textDecoration: 'none' }}>
+            Register
+          </Link>
+        </p>
+      </section>
     </main>
   );
 };
