@@ -12,6 +12,7 @@ const ApplicationTable = ({ applications, onEdit, onDelete }) => {
           <th>Company</th>
           <th>Role</th>
           <th>Status</th>
+          <th>Category</th>
           <th>Applied</th>
           <th>Next Action</th>
           <th>Next Date</th>

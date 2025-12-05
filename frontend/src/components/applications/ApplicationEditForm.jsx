@@ -1,23 +1,24 @@
-import { useState } from 'react';
-import { updateApplication } from '../../api/applicationsApi.js';
+import { useState } from "react";
+import { updateApplication } from "../../api/applicationsApi.js";
 
 const ApplicationEditForm = ({ app, onClose, onUpdated }) => {
-  const [company, setCompany] = useState(app.company || '');
-  const [role, setRole] = useState(app.role || '');
-  const [jobLink, setJobLink] = useState(app.jobLink || '');
-  const [status, setStatus] = useState(app.status || 'applied');
-  const [nextAction, setNextAction] = useState(app.nextAction || '');
+  const [company, setCompany] = useState(app.company || "");
+  const [role, setRole] = useState(app.role || "");
+  const [jobLink, setJobLink] = useState(app.jobLink || "");
+  const [status, setStatus] = useState(app.status || "applied");
+  const [category, setCategory] = useState(app.category || "cold");
+  const [nextAction, setNextAction] = useState(app.nextAction || "");
   const [nextActionDate, setNextActionDate] = useState(() => {
-    if (!app.nextActionDate) return '';
+    if (!app.nextActionDate) return "";
     const d = new Date(app.nextActionDate);
     return d.toISOString().slice(0, 10);
   });
-  const [notes, setNotes] = useState(app.notes || '');
-  const [error, setError] = useState('');
+  const [notes, setNotes] = useState(app.notes || "");
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
 
     try {
       await updateApplication(app._id, {
@@ -25,6 +26,7 @@ const ApplicationEditForm = ({ app, onClose, onUpdated }) => {
         role,
         jobLink,
         status,
+        category,
         nextAction,
         nextActionDate: nextActionDate ? new Date(nextActionDate) : null,
         notes,
@@ -32,12 +34,12 @@ const ApplicationEditForm = ({ app, onClose, onUpdated }) => {
 
       if (onUpdated) onUpdated();
     } catch (err) {
-      setError(err.response?.data?.message || 'Error updating application');
+      setError(err.response?.data?.message || "Error updating application");
     }
   };
 
   return (
-    <section className="section-card" style={{ marginTop: '1rem' }}>
+    <section className="section-card" style={{ marginTop: "1rem" }}>
       <h2 className="subheading">Edit Application</h2>
       <form onSubmit={handleSubmit} className="form-stack">
         <div className="form-field">
@@ -58,17 +60,11 @@ const ApplicationEditForm = ({ app, onClose, onUpdated }) => {
         </div>
         <div className="form-field">
           <label>Job Link</label>
-          <input
-            value={jobLink}
-            onChange={(e) => setJobLink(e.target.value)}
-          />
+          <input value={jobLink} onChange={(e) => setJobLink(e.target.value)} />
         </div>
         <div className="form-field">
           <label>Status</label>
-          <select
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-          >
+          <select value={status} onChange={(e) => setStatus(e.target.value)}>
             <option value="applied">Applied</option>
             <option value="phone">Phone Screen</option>
             <option value="oa">Online Assessment</option>
@@ -77,6 +73,18 @@ const ApplicationEditForm = ({ app, onClose, onUpdated }) => {
             <option value="rejected">Rejected</option>
           </select>
         </div>
+        <div className="form-field">
+          <label>Category</label>
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          >
+            <option value="cold">Cold Apply</option>
+            <option value="referral">Referral</option>
+            <option value="dream">Dream Company</option>
+          </select>
+        </div>
+
         <div className="form-field">
           <label>Next Action</label>
           <input
@@ -94,22 +102,15 @@ const ApplicationEditForm = ({ app, onClose, onUpdated }) => {
         </div>
         <div className="form-field">
           <label>Notes</label>
-          <textarea
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-          />
+          <textarea value={notes} onChange={(e) => setNotes(e.target.value)} />
         </div>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
+        {error && <p style={{ color: "red" }}>{error}</p>}
 
         <div className="form-actions">
           <button type="submit" className="btn btn-primary">
             Save Changes
           </button>
-          <button
-            type="button"
-            className="btn btn-secondary"
-            onClick={onClose}
-          >
+          <button type="button" className="btn btn-secondary" onClick={onClose}>
             Cancel
           </button>
         </div>
@@ -119,4 +120,3 @@ const ApplicationEditForm = ({ app, onClose, onUpdated }) => {
 };
 
 export default ApplicationEditForm;
-

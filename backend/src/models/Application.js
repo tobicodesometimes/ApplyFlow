@@ -1,11 +1,17 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const applicationSchema = new mongoose.Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
       required: true,
+    },
+    
+    category: {
+      type: String,
+      enum: ["dream", "referral", "cold"],
+      default: "cold",
     },
 
     company: { type: String, required: true },
@@ -14,13 +20,13 @@ const applicationSchema = new mongoose.Schema(
 
     status: {
       type: String,
-      enum: ['saved', 'applied', 'phone', 'oa', 'onsite', 'offer', 'rejected'],
-      default: 'applied',
+      enum: ["saved", "applied", "phone", "oa", "onsite", "offer", "rejected"],
+      default: "applied",
     },
 
     appliedDate: { type: Date, default: Date.now },
 
-    nextAction: { type: String },   // e.g. “Follow up email”
+    nextAction: { type: String }, // e.g. “Follow up email”
     nextActionDate: { type: Date }, // when you plan to do it
 
     location: { type: String },
@@ -30,5 +36,5 @@ const applicationSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Application = mongoose.model('Application', applicationSchema);
+const Application = mongoose.model("Application", applicationSchema);
 export default Application;

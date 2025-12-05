@@ -3,15 +3,41 @@ import Application from '../models/Application.js';
 // POST /api/applications
 export const createApplication = async (req, res) => {
   try {
+    const {
+      company,
+      role,
+      jobLink,
+      status,
+      appliedDate,
+      nextAction,
+      nextActionDate,
+      location,
+      salaryRange,
+      notes,
+      category,
+    } = req.body;
+
     const app = await Application.create({
       userId: req.user._id,
-      ...req.body,
+      company,
+      role,
+      jobLink,
+      status,
+      appliedDate,
+      nextAction,
+      nextActionDate,
+      location,
+      salaryRange,
+      notes,
+      category, // 👈 explicitly included
     });
+
     return res.status(201).json(app);
   } catch (err) {
     return res.status(500).json({ message: 'Error creating application' });
   }
 };
+
 
 // GET /api/applications
 export const getApplications = async (req, res) => {
@@ -53,9 +79,35 @@ export const getApplicationById = async (req, res) => {
 // PUT /api/applications/:id
 export const updateApplication = async (req, res) => {
   try {
+    const {
+      company,
+      role,
+      jobLink,
+      status,
+      appliedDate,
+      nextAction,
+      nextActionDate,
+      location,
+      salaryRange,
+      notes,
+      category,
+    } = req.body;
+
     const app = await Application.findOneAndUpdate(
       { _id: req.params.id, userId: req.user._id },
-      req.body,
+      {
+        company,
+        role,
+        jobLink,
+        status,
+        appliedDate,
+        nextAction,
+        nextActionDate,
+        location,
+        salaryRange,
+        notes,
+        category, // 👈 explicitly included
+      },
       { new: true }
     );
 
@@ -65,6 +117,7 @@ export const updateApplication = async (req, res) => {
     return res.status(500).json({ message: 'Error updating application' });
   }
 };
+
 
 // delete an application
 export const deleteApplication = async (req, res) => {
