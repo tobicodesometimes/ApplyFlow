@@ -1,19 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import {
   fetchApplications,
   deleteApplication as deleteApplicationApi,
-} from '../api/applicationsApi.js';
+} from "../api/applicationsApi.js";
+import { exportApplicationsToCsv } from "../utils/exportCsv.js";
 
-import ApplicationTable from '../components/applications/ApplicationTable.jsx';
-import TodayPanel from '../components/applications/TodayPanel.jsx';
-import ApplicationForm from '../components/applications/ApplicationForm.jsx';
-import ApplicationEditForm from '../components/applications/ApplicationEditForm.jsx';
-import StatsBar from '../components/applications/StatsBar.jsx';
+import ApplicationTable from "../components/applications/ApplicationTable.jsx";
+import TodayPanel from "../components/applications/TodayPanel.jsx";
+import ApplicationForm from "../components/applications/ApplicationForm.jsx";
+import ApplicationEditForm from "../components/applications/ApplicationEditForm.jsx";
+import StatsBar from "../components/applications/StatsBar.jsx";
 
 const DashboardPage = () => {
   const [applications, setApplications] = useState([]);
-  const [statusFilter, setStatusFilter] = useState('');
-  const [search, setSearch] = useState('');
+  const [statusFilter, setStatusFilter] = useState("");
+  const [search, setSearch] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [editingApp, setEditingApp] = useState(null);
 
@@ -40,16 +41,16 @@ const DashboardPage = () => {
         return 0;
       });
 
-      console.log('Loaded applications (sorted):', sorted);
+      console.log("Loaded applications (sorted):", sorted);
       setApplications(sorted);
     } catch (err) {
-      console.error('Error loading applications', err);
+      console.error("Error loading applications", err);
     }
   };
 
-    const handleDelete = async (id) => {
+  const handleDelete = async (id) => {
     const ok = window.confirm(
-      'Delete this application? This action cannot be undone.'
+      "Delete this application? This action cannot be undone."
     );
     if (!ok) return;
 
@@ -57,8 +58,8 @@ const DashboardPage = () => {
       await deleteApplicationApi(id);
       await loadApplications();
     } catch (err) {
-      console.error('Error deleting application', err);
-      alert('There was a problem deleting this application.');
+      console.error("Error deleting application", err);
+      alert("There was a problem deleting this application.");
     }
   };
 
@@ -73,18 +74,18 @@ const DashboardPage = () => {
 
       <StatsBar applications={applications} />
 
-      <section className="section-card" style={{ marginBottom: '1.5rem' }}>
-        <div style={{ marginBottom: '0.75rem' }}>
+      <section className="section-card" style={{ marginBottom: "1.5rem" }}>
+        <div style={{ marginBottom: "0.75rem" }}>
           <input
             placeholder="Search by company or role"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            style={{ padding: '0.4rem 0.6rem', marginRight: '0.5rem' }}
+            style={{ padding: "0.4rem 0.6rem", marginRight: "0.5rem" }}
           />
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            style={{ padding: '0.4rem 0.6rem', marginRight: '0.5rem' }}
+            style={{ padding: "0.4rem 0.6rem", marginRight: "0.5rem" }}
           >
             <option value="">All statuses</option>
             <option value="applied">Applied</option>
@@ -108,6 +109,18 @@ const DashboardPage = () => {
               onClick={() => setShowForm(true)}
             >
               Add Application
+            </button>
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() =>
+                exportApplicationsToCsv(
+                  applications,
+                  `applyflow-${new Date().toISOString().slice(0, 10)}.csv`
+                )
+              }
+            >
+              Export CSV
             </button>
           </span>
         </div>
@@ -148,8 +161,3 @@ const DashboardPage = () => {
 };
 
 export default DashboardPage;
-
-
-
-
-
