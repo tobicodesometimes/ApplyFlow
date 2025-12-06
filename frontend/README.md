@@ -1,40 +1,68 @@
-# ApplyFlow
+## ApplyFlow
 
 ApplyFlow is a lightweight job search command center built with the MERN stack.  
 It helps you track applications, follow-ups, and outcomes in one simple dashboard so your job hunt feels organized instead of chaotic.
 
+## Live Demo 
+
+Frontend (Netlify): https://apply-flow.netlify.app
+Backend (Render): https://applyflow-q3by.onrender.com
+
 ## Features
 
-- 🔐 **Authentication & Authorization**
-  - User registration and login with JWT-based auth.
-  - Protected API routes scoped to the logged-in user (your data stays yours).
+# 🔐 Authentication & Authorization
 
-- 📥 **Job Application Tracking**
-  - Add new applications with:
-    - Company
-    - Role / position
-    - Job link
-    - Status (applied, phone, OA, onsite, offer, rejected)
-    - Next action (e.g., "Call recruiter", "Send thank-you email")
-    - Next action date
-    - Notes
+User registration + login with JWT.
 
-- 📊 **Dashboard Overview**
-  - Sorted list of applications (by next action date, then applied date).
-  - **Today & Overdue Actions** section so you always know who to follow up with.
-  - Status shown as colored pills for quick scanning.
+Protected routes scoped to the logged-in user (your data stays yours).
 
-- 📈 **Stats Bar**
-  - Top-of-dashboard summary cards:
-    - Total applications
-    - In process
-    - Offers
-    - Rejections
+# 🧾 Job Application Tracking
 
-- ✏️ **Edit Existing Applications**
-  - Inline `Edit` button on each row.
-  - Pre-filled form for updating status, next steps, dates, and notes.
-  - Dashboard auto-refreshes after changes.
+Add applications with:
+
+Company
+
+Role / position
+
+Status
+
+Category (Cold Apply / Referral / Dream Company)
+
+Applied date
+
+Next action + next action date
+
+Notes (if included in your UI)
+
+# 📊 Dashboard Overview
+
+Summary cards:
+
+Total
+
+In process
+
+Offers
+
+Rejections
+
+“Today & Overdue Actions” panel for fast follow-ups.
+
+Clean table with status/category pills.
+
+# ✏️ Edit & Update
+
+Edit applications directly from the table.
+
+Dashboard refreshes after updates.
+
+🗑️ Delete Applications
+
+Remove entries you no longer want to track.
+
+# 📤 Export CSV
+
+One-click export for backups or spreadsheet workflows.
 
 ---
 
@@ -58,35 +86,34 @@ It helps you track applications, follow-ups, and outcomes in one simple dashboar
 
 ## Project Structure
 
-```txt
 ApplyFlow/
   backend/
     src/
       config/         # MongoDB connection
       controllers/    # auth & application controllers
       middleware/     # auth middleware, error handlers
-      models/         # Mongoose models (User, Application)
+      models/         # User, Application
       routes/         # auth & application routes
       utils/          # token helpers, etc.
-      server.js       # Express app entry
-    .env              # backend environment variables (ignored by git)
+      server.js       # Express entry
+    .env              # ignored by git
     package.json
 
   frontend/
     src/
       api/            # axios client + API helpers
       components/
-        layout/       # Navbar, ProtectedRoute
-        applications/ # table, rows, forms, stats, today panel
-      context/        # auth context + hook
+      context/
       pages/          # Login, Register, Dashboard, NotFound
-      styles/         # globals.css
+      styles/
       main.jsx
       App.jsx
-    .env              # frontend environment variables (ignored by git)
+    .env              # ignored by git
     package.json
 
-Getting Started
+
+## Getting Started
+
 Prerequisites
 
 Node.js (LTS recommended)
@@ -152,7 +179,7 @@ Watch the stats bar update as you add / update applications.
 
 Use the Edit button in the table to update status, next steps, dates, and notes.
 
-API Overview (High Level)
+## API Overview (High Level)
 
 All API routes are prefixed with /api.
 
@@ -173,20 +200,6 @@ POST /api/applications – create a new application.
 PUT /api/applications/:id – update an existing application.
 
 (You can extend with DELETE /api/applications/:id later.)
-
-Future Improvements / Ideas
-
-Some ideas for next iterations:
-
-Delete applications (with a confirmation step).
-
-Duplicate an existing application to speed up tracking similar roles.
-
-Export data as CSV for spreadsheet lovers.
-
-Tagging or categorization (e.g., “dream companies”, “referral”, “cold apply”).
-
-Simple reminders / notifications for overdue follow-ups.
 
 Why I Built This
 
